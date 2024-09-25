@@ -139,7 +139,8 @@ public class SocialShareUtil {
         }
         return shareFileAndTextToPackage(imagePath, content, activity, defaultApplication);
     }
-    public String shareToSMSFiles( Context activity, ArrayList<String> imagePaths) {
+
+    public String shareToSMSFiles(Context activity, ArrayList<String> imagePaths) {
         String defaultApplication;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             defaultApplication = Telephony.Sms.getDefaultSmsPackage(activity);
@@ -457,6 +458,37 @@ public class SocialShareUtil {
         }
 
         return appId;
+    }
+
+    public String shareToFacebookLink(Context activity, String message) {
+        FacebookSdk.fullyInitialize();
+        FacebookSdk.setApplicationId(getFacebookAppId(activity));
+        callbackManager = callbackManager == null ? CallbackManager.Factory.create() : callbackManager;
+        ShareDialog shareDialog = new ShareDialog(activity);
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result1) {
+                System.out.println("---------------onSuccess");
+                result.success(SUCCESS);
+            }
+
+            @Override
+            public void onCancel() {
+                result.success(ERROR_CANCELLED);
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                System.out.println("---------------onError");
+                result.success(error.getLocalizedMessage());
+            }
+        });
+        ShareLinkContent content = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse(message))
+                .build();
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            shareDialog.show(content);
+        }
     }
 
 }
