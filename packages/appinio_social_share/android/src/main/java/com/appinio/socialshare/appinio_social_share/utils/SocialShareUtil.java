@@ -461,7 +461,7 @@ public class SocialShareUtil {
         return appId;
     }
 
-    public String shareToFacebookLink(Activity activity, String message, MethodChannel.Result result) {
+    public void shareToFacebookLink(Activity activity, String message, MethodChannel.Result result) {
         FacebookSdk.fullyInitialize();
         FacebookSdk.setApplicationId(getFacebookAppId(activity));
         callbackManager = callbackManager == null ? CallbackManager.Factory.create() : callbackManager;

@@ -133,7 +133,9 @@ public class AppinioSocialSharePlugin implements FlutterPlugin, MethodCallHandle
             case SMS_ANDROID_MULTIFILES:
                 return socialShareUtil.shareToSMSFiles(activeContext, imagePaths);
             case FACEBOOK_LINK:
-                return socialShareUtil.shareToFacebookLink(activity, message,result);
+                if (activity == null) return SocialShareUtil.UNKNOWN_ERROR;
+                socialShareUtil.shareToFacebookLink(activity, message, result);
+                return null;
             default:
                 return null;
         }
