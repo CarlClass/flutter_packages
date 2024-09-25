@@ -53,6 +53,10 @@ class Android {
     return AppinioSocialSharePlatform.instance.copyToClipBoard(message);
   }
 
+  Future<String> shareToFacebookLink(String link) {
+    return AppinioSocialSharePlatform.instance.shareToFacebookLink(link);
+  }
+
   Future<String> shareToFacebook(String hashtag, List<String> filePaths) {
     return AppinioSocialSharePlatform.instance
         .shareToFacebook(hashtag, filePaths);
